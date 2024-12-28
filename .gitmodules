@@ -1,0 +1,6 @@
+[submodule "exchange-processing-service"]
+	path = exchange-processing-service
+	url = https://github.com/ExToozy/exchange-processing-service
+[submodule "currency-rate-service"]
+	path = currency-rate-service
+	url = https://github.com/ExToozy/currency-rate-service
