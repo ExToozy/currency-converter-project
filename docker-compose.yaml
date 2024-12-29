@@ -9,6 +9,25 @@ volumes:
     driver: local
 
 services:
+  gateway-service:
+    build:
+      dockerfile: gateway.Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - app
+    environment:
+      - EUREKA_HOST=eureka-discovery-service
+      - PROCESSING_URL=http://exchange-processing-service:8090
+      - CURRENCY_URL=http://currency-rate-service:8085
+
+  eureka-discovery-service:
+    build:
+      dockerfile: eureka.Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - app
 
   postgres:
     image: postgres:15.1-alpine
@@ -22,3 +41,27 @@ services:
       - POSTGRES_DB=processing
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  exchange-processing-service:
+    build:
+      dockerfile: processing.Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - app
+    depends_on:
+      - postgres
+    environment:
+      - EUREKA_HOST=eureka-discovery-service
+      - DB_HOST=postgres
+      - CURRENCY_URL=http://currency-rate-service:8080
+
+  currency-rate-service:
+    build:
+      dockerfile: currency.Dockerfile
+    ports:
+      - "8085:8085"
+    networks:
+      - app
+    environment:
+      - EUREKA_HOST=eureka-discovery-service
