@@ -4,3 +4,6 @@
 [submodule "currency-rate-service"]
 	path = currency-rate-service
 	url = https://github.com/ExToozy/currency-rate-service
+[submodule "eureka-service"]
+	path = eureka-service
+	url = .\\eureka-service\\
